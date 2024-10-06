@@ -1,101 +1,126 @@
-import Image from "next/image";
+"use client";
+
+import Board from "@/components/board";
+import Keyboard from "@/components/keyboard";
+import { colorIsDarkAdvanced, randomColour } from "@/lib/helpers";
+import { useState } from "react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  // let date: string = new Date().toLocaleString().split(",")[0];
+  const initial: string[][] = [];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  for (let j = 0; j < 6; j++) {
+    const temp = new Array(6).fill("");
+    initial.push(temp);
+  }
+
+  const [board, setBoard] = useState(initial);
+  const [row, setRow] = useState(0);
+  const [box, setBox] = useState(0);
+  console.log(box);
+  const [target, setTarget] = useState(randomColour());
+  const textColour = colorIsDarkAdvanced(target) ? "#ffffff" : "#000000";
+
+  // setting guess for game logic
+  // let guesses: string[] = [];
+  // let currentGuess: number = 0;
+  // let won: boolean = false;
+
+  // function checkGuess(guess: string): any[] {
+  //   const hex: string = "#" + guess;
+  //   if (hex === target) {
+  //     won = true;
+  //     currentGuess++;
+  //     return [hex, won];
+  //   }
+  //   let splitGuess: string[] = guess.split("");
+  //   currentGuess++;
+  //   guesses.push(hex);
+  //   return [hex, won];
+  // }
+
+  return (
+    <div className="flex flex-col items-center font-departure text-foreground">
+      <div className="bg-foreground w-full mb-5">
+        <h1 className="text-7xl font-departure uppercase font-bold text-center mt-3 mx-2 text-background hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-t hover:from-fuchsia-500 hover:to-cyan-500">
+          hues
+        </h1>
+        <p className="uppercase text-background text-base text-center mb-3 mt-1">
+          guess the hex
+        </p>
+      </div>
+
+      <div className="w-4 h-4 blob1 pointer-events-none"></div>
+
+      <div className="flex items-center">
+        <button>
+          <h2 className="mx-2 scale-y-150 text-lg">◄</h2>
+        </button>
+        <h1 className="text-center mx-2 text-2xl">meow</h1>
+        <button>
+          <h2 className="mx-2 scale-y-150 text-lg">►</h2>
+        </button>
+      </div>
+
+      <div className="my-1 py-0.5 px-0.5 rounded-sm z-20">
+        <div className="flex flex-col items-center rounded-sm py-5 px-5 uppercase">
+          <div className="flex items-center justify-between">
+            <div className="text-center">
+              <div className="w-[405px] h-[120px] rounded-sm border-[3px] border-foreground flex items-center justify-center py-1 px-1 bg-white/50">
+                <div
+                  className="w-[385px] h-[100px] flex items-center justify-center py-5"
+                  style={{ ["backgroundColor" as any]: target }}
+                >
+                  <h2
+                    className="font-departure text-xl"
+                    style={{ ["color" as any]: textColour }}
+                  >
+                    Target Colour
+                  </h2>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* <h1>{randomColour()}</h1> */}
+
+          {/* <div className="flex flex-row space-x-5 mt-4">
+            {values.map((value: string, index: number) => (
+              <div key={index} className="flex flex-col items-center">
+                <button className="scale-x-150"> ▲ </button>
+                <input
+                  type="text"
+                  maxLength={1}
+                  value={value}
+                  onChange={(e) => inputChange(index, e)}
+                  className="w-16 h-16 bg-white/50 border-[3px] border-foreground rounded-sm flex flex-col justify-between text-center text-2xl"
+                  pattern="[A-F0-9]"
+                ></input>
+                <button className="scale-x-150"> ▼ </button>
+              </div>
+            ))}
+          </div> */}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <Board
+          board={board}
+          setBoard={setBoard}
+          currRow={row}
+          setRow={setRow}
+          currBox={box}
+          setBox={setBox}
+        ></Board>
+      </div>
+
+      <Keyboard
+        setBoard={setBoard}
+        currRow={row}
+        setRow={setRow}
+        currBox={box}
+        setBox={setBox}
+      ></Keyboard>
+
+      <div className="fixed top-0 left-0 w-screen h-screen z-10 pointer-events-none repeatBG"></div>
     </div>
   );
 }
