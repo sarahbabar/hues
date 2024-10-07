@@ -1,23 +1,25 @@
 "use client";
 
+import { EMPTY, hexToInt, intToHex } from "@/lib/helpers";
+
 const letters: string[] = ["←", "A", "B", "C", "D", "E", "F", "↵"];
 const nums: string[] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 export default function Keyboard({
   setBoard,
   currRow,
-  setRow,
   currBox,
   setBox,
+  submitGuess,
 }: {
   setBoard: any;
   currRow: number;
-  setRow: any;
   currBox: number;
   setBox: any;
+  submitGuess: any;
 }) {
-  const setToBoard = (row: number, col: number, value: string) => {
-    setBoard((currBoard: string[][]) => {
+  const setToBoard = (row: number, col: number, value: number) => {
+    setBoard((currBoard: number[][]) => {
       const newBoard = [...currBoard];
       newBoard[row] = [...newBoard[row]];
       newBoard[row][col] = value;
@@ -26,10 +28,10 @@ export default function Keyboard({
   };
 
   const handleKeyPress = (key: string) => {
-    console.log(`row: ${currRow}, box: ${currBox}, key: ${key}`);
     if (key === "←") {
       if (currBox > 0) {
-        setToBoard(currRow, currBox - 1, "");
+        // set w/ empty string
+        setToBoard(currRow, currBox - 1, EMPTY);
         setBox((prevBox: number) => {
           return prevBox - 1;
         });
@@ -37,21 +39,29 @@ export default function Keyboard({
       return;
     }
     if (key === "↵") {
-      if (currBox === 6) {
-        setRow((prevRow: number) => {
-          return prevRow + 1;
-        });
-        setBox(0);
-      }
-      return;
+      //   if (currBox === 6) {
+      //     const newGuess = "#" + board[currRow].map(intToHex).join("");
+      //     setGuess((currGuesses: string[]) => {
+      //       const newGuesses = [...currGuesses];
+      //       newGuesses[currRow] = newGuess;
+      //       return newGuesses;
+      //     });
+      //     setRow((prevRow: number) => {
+      //       return prevRow + 1;
+      //     });
+      //     setBox(0);
+      //   }
+      return submitGuess();
     }
     if (/^[a-fA-F0-9]$/.test(key)) {
+      key = key.toLowerCase();
+
       if (currBox > 5) {
         return;
       }
-      setToBoard(currRow, currBox, key.toLowerCase());
+      setToBoard(currRow, currBox, hexToInt(key));
       setBox((prevBox: number) => {
-        console.log("prev:", prevBox, "curr:", currBox);
+        //   console.log("prev:", prevBox, "curr:", currBox);
         return prevBox + 1;
       });
     }

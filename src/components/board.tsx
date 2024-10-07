@@ -1,23 +1,34 @@
 "use client";
-import { useEffect } from "react";
+import {
+  colorIsDarkAdvanced,
+  EMPTY,
+  getTextColour,
+  hexToInt,
+  intToHex,
+} from "@/lib/helpers";
+import { useEffect, useState } from "react";
 
 export default function Board({
   board,
   setBoard,
   currRow,
-  setRow,
   currBox,
   setBox,
+  guesses,
+  submitGuess,
+  target,
 }: {
-  board: string[][];
+  board: number[][];
   setBoard: any;
   currRow: number;
-  setRow: any;
   currBox: number;
   setBox: any;
+  guesses: string[];
+  submitGuess: any;
+  target: string;
 }) {
-  const setToBoard = (row: number, col: number, value: string) => {
-    setBoard((currBoard: string[][]) => {
+  const setToBoard = (row: number, col: number, value: number) => {
+    setBoard((currBoard: number[][]) => {
       const newBoard = [...currBoard];
       newBoard[row] = [...newBoard[row]];
       newBoard[row][col] = value;
@@ -27,10 +38,11 @@ export default function Board({
 
   useEffect(() => {
     const handleKeyPress = ({ key }: { key: string }) => {
-      console.log(`row: ${currRow}, box: ${currBox}, key: ${key}`);
+      //   console.log(`row: ${currRow}, box: ${currBox}, key: ${key}`);
       if (key === "Backspace") {
         if (currBox > 0) {
-          setToBoard(currRow, currBox - 1, "");
+          // set w/ empty string
+          setToBoard(currRow, currBox - 1, EMPTY);
           setBox((prevBox: number) => {
             return prevBox - 1;
           });
@@ -38,21 +50,32 @@ export default function Board({
         return;
       }
       if (key === "Enter") {
-        if (currBox === 6) {
-          setRow((prevRow: number) => {
-            return prevRow + 1;
-          });
-          setBox(0);
-        }
-        return;
+        // if (currBox === 6) {
+        //   //   const newGuess = "#" + board[currRow].join("");
+        //   const newGuess = "#" + board[currRow].map(intToHex).join("");
+        //   //   console.log(newGuess);
+        //   //   console.log(board);
+        //   setGuess((currGuesses: string[]) => {
+        //     const newGuesses = [...currGuesses];
+        //     newGuesses[currRow] = newGuess;
+        //     return newGuesses;
+        //   });
+        //   setRow((prevRow: number) => {
+        //     return prevRow + 1;
+        //   });
+        //   setBox(0);
+        // }
+        return submitGuess();
       }
       if (/^[a-fA-F0-9]$/.test(key)) {
+        key = key.toLowerCase();
+
         if (currBox > 5) {
           return;
         }
-        setToBoard(currRow, currBox, key.toLowerCase());
+        setToBoard(currRow, currBox, hexToInt(key));
         setBox((prevBox: number) => {
-          console.log("prev:", prevBox, "curr:", currBox);
+          //   console.log("prev:", prevBox, "curr:", currBox);
           return prevBox + 1;
         });
       }
@@ -63,6 +86,36 @@ export default function Board({
       window.removeEventListener("keyup", handleKeyPress);
     };
   }, [currRow, currBox]);
+
+  const hint = (
+    rowInd: number,
+    boxInd: number,
+    value: number
+  ): [string, boolean] => {
+    // "▲" "▼
+    if (rowInd >= currRow) {
+      return ["", false];
+    }
+    const targetArr = target.slice(1).split("").map(hexToInt);
+
+    const difference: number = targetArr[boxInd] - value;
+    if (difference === 0) {
+      return ["♥", false];
+    }
+
+    // go down
+    if (difference < 0) {
+      if (Math.abs(difference) === 1 || Math.abs(difference) === 2) {
+        return ["›", true];
+      }
+      return ["»", true];
+    }
+    // go up
+    if (difference === 1 || difference === 2) {
+      return ["‹", true];
+    }
+    return ["«", true];
+  };
 
   return (
     <div>
@@ -75,11 +128,28 @@ export default function Board({
             {row.map((box, boxIndex) => (
               <div key={boxIndex} className="flex flex-col items-center">
                 <div
-                  className="w-16 h-16 bg-white/50 border-[3px] 
-                            border-foreground rounded-sm flex justify-center 
-                            items-center text-xl font-bold uppercase"
+                  className="w-16 h-16 border-[3px] 
+                            border-foreground rounded-sm flex flex-col justify-center 
+                            items-center text-xl font-bold uppercase relative"
+                  style={{
+                    ["backgroundColor" as any]: guesses[rowIndex],
+                    ["color" as any]: getTextColour(guesses[rowIndex]),
+                  }}
                 >
-                  {box}
+                  {intToHex(box)}
+
+                  {(() => {
+                    const [h, r] = hint(rowIndex, boxIndex, box);
+                    return (
+                      <div
+                        className={`absolute top-0 right-1 text-sm ${
+                          r ? "rotate-90" : ""
+                        }`}
+                      >
+                        {h}
+                      </div>
+                    );
+                  })()}
                 </div>
               </div>
             ))}

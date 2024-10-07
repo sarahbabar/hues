@@ -2,15 +2,23 @@
 
 import Board from "@/components/board";
 import Keyboard from "@/components/keyboard";
-import { colorIsDarkAdvanced, randomColour } from "@/lib/helpers";
+import {
+  colorIsDarkAdvanced,
+  randomColour,
+  getTextColour,
+  EMPTY,
+  intToHex,
+} from "@/lib/helpers";
 import { useState } from "react";
+
+type GameState = "playing" | "won" | "lost";
 
 export default function Home() {
   // let date: string = new Date().toLocaleString().split(",")[0];
-  const initial: string[][] = [];
+  const initial: number[][] = [];
 
   for (let j = 0; j < 6; j++) {
-    const temp = new Array(6).fill("");
+    const temp = new Array(6).fill(EMPTY);
     initial.push(temp);
   }
 
@@ -19,28 +27,51 @@ export default function Home() {
   const [box, setBox] = useState(0);
   console.log(box);
   const [target, setTarget] = useState(randomColour());
-  const textColour = colorIsDarkAdvanced(target) ? "#ffffff" : "#000000";
 
-  // setting guess for game logic
-  // let guesses: string[] = [];
-  // let currentGuess: number = 0;
-  // let won: boolean = false;
+  const [guesses, setGuess] = useState([
+    "#ffffff80",
+    "#ffffff80",
+    "#ffffff80",
+    "#ffffff80",
+    "#ffffff80",
+    "#ffffff80",
+  ]);
 
-  // function checkGuess(guess: string): any[] {
-  //   const hex: string = "#" + guess;
-  //   if (hex === target) {
-  //     won = true;
-  //     currentGuess++;
-  //     return [hex, won];
-  //   }
-  //   let splitGuess: string[] = guess.split("");
-  //   currentGuess++;
-  //   guesses.push(hex);
-  //   return [hex, won];
-  // }
+  const submitGuess = () => {
+    if (box === 6) {
+      //   const newGuess = "#" + board[currRow].join("");
+      const newGuess = "#" + board[row].map(intToHex).join("");
+      //   console.log(newGuess);
+      //   console.log(board);
+      setGuess((currGuesses: string[]) => {
+        const newGuesses = [...currGuesses];
+        newGuesses[row] = newGuess;
+        return newGuesses;
+      });
+      setRow((prevRow: number) => {
+        return prevRow + 1;
+      });
+      setBox(0);
+    }
+    return;
+  };
+
+  const [gameState, setGameState] = useState<GameState>("playing");
+  const checkGame = () => {
+    if (guesses[row] === target) {
+      setGameState("won");
+    }
+    if (row >= 0 && row < 5 && guesses[row] !== target) {
+      setGameState("playing");
+    }
+    if (row === 5 && guesses[row] !== target) {
+      setGameState("lost");
+    }
+    return gameState;
+  };
 
   return (
-    <div className="flex flex-col items-center font-departure text-foreground">
+    <div className="flex flex-col items-center font-departure text-foreground relative">
       <div className="bg-foreground w-full mb-5">
         <h1 className="text-7xl font-departure uppercase font-bold text-center mt-3 mx-2 text-background hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-t hover:from-fuchsia-500 hover:to-cyan-500">
           hues
@@ -73,7 +104,7 @@ export default function Home() {
                 >
                   <h2
                     className="font-departure text-xl"
-                    style={{ ["color" as any]: textColour }}
+                    style={{ ["color" as any]: getTextColour(target) }}
                   >
                     Target Colour
                   </h2>
@@ -82,7 +113,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* <h1>{randomColour()}</h1> */}
+          <h1>{target}</h1>
 
           {/* <div className="flex flex-row space-x-5 mt-4">
             {values.map((value: string, index: number) => (
@@ -106,21 +137,25 @@ export default function Home() {
           board={board}
           setBoard={setBoard}
           currRow={row}
-          setRow={setRow}
           currBox={box}
           setBox={setBox}
+          guesses={guesses}
+          submitGuess={submitGuess}
+          target={target}
         ></Board>
       </div>
 
       <Keyboard
         setBoard={setBoard}
         currRow={row}
-        setRow={setRow}
         currBox={box}
         setBox={setBox}
+        submitGuess={submitGuess}
       ></Keyboard>
 
       <div className="fixed top-0 left-0 w-screen h-screen z-10 pointer-events-none repeatBG"></div>
+
+      {/* <div className="fixed top-1/3  w-[450px] h-[450px] z-50 bg-white/80"></div> */}
     </div>
   );
 }
