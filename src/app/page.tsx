@@ -2,16 +2,16 @@
 
 import Board from "@/components/board";
 import Keyboard from "@/components/keyboard";
+import Popup from "@/components/popup";
 import {
   colorIsDarkAdvanced,
   randomColour,
   getTextColour,
   EMPTY,
   intToHex,
+  GameState,
 } from "@/lib/helpers";
-import { useState } from "react";
-
-type GameState = "playing" | "won" | "lost";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   // let date: string = new Date().toLocaleString().split(",")[0];
@@ -39,7 +39,6 @@ export default function Home() {
 
   const submitGuess = () => {
     if (box === 6) {
-      //   const newGuess = "#" + board[currRow].join("");
       const newGuess = "#" + board[row].map(intToHex).join("");
       //   console.log(newGuess);
       //   console.log(board);
@@ -48,32 +47,45 @@ export default function Home() {
         newGuesses[row] = newGuess;
         return newGuesses;
       });
-      setRow((prevRow: number) => {
-        return prevRow + 1;
-      });
-      setBox(0);
+      const state = checkGame();
+      if (state === "playing") {
+        setRow((prevRow: number) => {
+          return prevRow + 1;
+        });
+        setBox(0);
+      }
     }
     return;
   };
 
   const [gameState, setGameState] = useState<GameState>("playing");
   const checkGame = () => {
-    if (guesses[row] === target) {
+    const newGuess = "#" + board[row].map(intToHex).join("");
+    if (newGuess === target) {
       setGameState("won");
+      return "won";
     }
-    if (row >= 0 && row < 5 && guesses[row] !== target) {
+    if (row >= 0 && row < 5 && newGuess !== target) {
       setGameState("playing");
+      return "playing";
     }
-    if (row === 5 && guesses[row] !== target) {
+    if (row === 5 && newGuess !== target) {
       setGameState("lost");
+      return "lost";
     }
-    return gameState;
+    return "idle";
   };
+
+  // const [isVisible, setIsVisible] = useState(false);
 
   return (
     <div className="flex flex-col items-center font-departure text-foreground relative">
       <div className="bg-foreground w-full mb-5">
-        <h1 className="text-7xl font-departure uppercase font-bold text-center mt-3 mx-2 text-background hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-t hover:from-fuchsia-500 hover:to-cyan-500">
+        <h1
+          className="text-7xl font-departure uppercase font-bold text-center mt-3 mx-2 
+        text-background hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-b 
+        hover:from-[#ff809f] hover:to-[#83c9ff]"
+        >
           hues
         </h1>
         <p className="uppercase text-background text-base text-center mb-3 mt-1">
@@ -142,6 +154,7 @@ export default function Home() {
           guesses={guesses}
           submitGuess={submitGuess}
           target={target}
+          gameState={gameState}
         ></Board>
       </div>
 
@@ -151,11 +164,12 @@ export default function Home() {
         currBox={box}
         setBox={setBox}
         submitGuess={submitGuess}
+        gameState={gameState}
       ></Keyboard>
 
       <div className="fixed top-0 left-0 w-screen h-screen z-10 pointer-events-none repeatBG"></div>
 
-      {/* <div className="fixed top-1/3  w-[450px] h-[450px] z-50 bg-white/80"></div> */}
+      <Popup setGameState={setGameState} gameState={gameState}></Popup>
     </div>
   );
 }

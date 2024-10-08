@@ -1,6 +1,6 @@
 "use client";
 
-import { EMPTY, hexToInt, intToHex } from "@/lib/helpers";
+import { EMPTY, GameState, hexToInt, intToHex } from "@/lib/helpers";
 
 const letters: string[] = ["←", "A", "B", "C", "D", "E", "F", "↵"];
 const nums: string[] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -11,12 +11,14 @@ export default function Keyboard({
   currBox,
   setBox,
   submitGuess,
+  gameState,
 }: {
   setBoard: any;
   currRow: number;
   currBox: number;
   setBox: any;
   submitGuess: any;
+  gameState: GameState;
 }) {
   const setToBoard = (row: number, col: number, value: number) => {
     setBoard((currBoard: number[][]) => {
@@ -72,14 +74,15 @@ export default function Keyboard({
       <div className="flex space-x-2">
         {nums.map((num) => (
           <button
-            className="w-14 h-14 bg-white/50 hover:bg-white duration-50 
+            className="w-14 h-14 bg-white/50 not:disabled:hover:bg-white duration-50 
             border-[3px] border-foreground rounded-sm text-xl flex items-start justify-start px-0.5
-            hover:scale-110 transition "
+            hover:scale-110 disabled:hover:scale-100 transition disabled:opacity-60"
             key={num}
             onClick={(e) => {
               (e.target as HTMLButtonElement).blur();
               handleKeyPress(num);
             }}
+            disabled={gameState !== "playing"}
           >
             {num}
           </button>
@@ -89,14 +92,15 @@ export default function Keyboard({
       <div className="flex space-x-2">
         {letters.map((letter) => (
           <button
-            className="w-14 h-14 bg-white/50 hover:bg-white duration-100 
+            className="w-14 h-14 bg-white/50 hover:bg-white disabled:hover:bg-white/50 duration-100 
             border-[3px] border-foreground rounded-sm text-xl flex items-start justify-start px-0.5
-            hover:scale-110 transition "
+            hover:scale-110 disabled:hover:scale-100 transition disabled:opacity-60"
             key={letter}
             onClick={(e) => {
               (e.target as HTMLButtonElement).blur();
               handleKeyPress(letter);
             }}
+            disabled={gameState !== "playing"}
           >
             {letter}
           </button>

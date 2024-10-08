@@ -101,3 +101,31 @@ export function intToHex(int: number) {
     default: throw new Error('Invalid integer value');
   }
 }
+
+export type GameState = "playing" | "won" | "lost" | "idle";
+
+export function timer(deltaT: number): string {
+  if (deltaT <= 0) {
+    return "right now";
+  }
+  let hrs = Math.floor(deltaT / 3600);
+  let rem = deltaT % 3600;
+  let mins = Math.floor(rem / 60);
+  rem = rem % 60;
+  let secs = rem;
+
+  // const hrs = date.getHours().toString().padStart(2, "0");
+  // const mins = date.getMinutes().toString().padStart(2, "0");
+  // const secs = date.getSeconds().toString().padStart(2, "0");
+
+  if (hrs === 0 && mins === 0) {
+    return `${secs}s`;
+  }
+  if (hrs === 0) {
+    return `${mins}m ${secs}s`;
+  }
+  if (mins === 0) {
+    return `${hrs}h ${secs}s`;
+  }
+  return `${hrs}h ${mins}m ${secs}s`;
+}

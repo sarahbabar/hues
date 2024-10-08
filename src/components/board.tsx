@@ -2,6 +2,7 @@
 import {
   colorIsDarkAdvanced,
   EMPTY,
+  GameState,
   getTextColour,
   hexToInt,
   intToHex,
@@ -17,6 +18,7 @@ export default function Board({
   guesses,
   submitGuess,
   target,
+  gameState,
 }: {
   board: number[][];
   setBoard: any;
@@ -26,6 +28,7 @@ export default function Board({
   guesses: string[];
   submitGuess: any;
   target: string;
+  gameState: GameState;
 }) {
   const setToBoard = (row: number, col: number, value: number) => {
     setBoard((currBoard: number[][]) => {
@@ -37,6 +40,9 @@ export default function Board({
   };
 
   useEffect(() => {
+    if (gameState !== "playing") {
+      return;
+    }
     const handleKeyPress = ({ key }: { key: string }) => {
       //   console.log(`row: ${currRow}, box: ${currBox}, key: ${key}`);
       if (key === "Backspace") {
@@ -85,7 +91,7 @@ export default function Board({
     return () => {
       window.removeEventListener("keyup", handleKeyPress);
     };
-  }, [currRow, currBox]);
+  }, [currRow, currBox, gameState]);
 
   const hint = (
     rowInd: number,
@@ -93,7 +99,7 @@ export default function Board({
     value: number
   ): [string, boolean] => {
     // "▲" "▼
-    if (rowInd >= currRow) {
+    if (rowInd > currRow || (rowInd === currRow && gameState === "playing")) {
       return ["", false];
     }
     const targetArr = target.slice(1).split("").map(hexToInt);
