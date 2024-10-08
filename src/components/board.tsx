@@ -134,7 +134,7 @@ export default function Board({
             {row.map((box, boxIndex) => (
               <div key={boxIndex} className="flex flex-col items-center">
                 <div
-                  className="w-16 h-16 border-[3px] 
+                  className="w-14 h-14 md:w-16 md:h-16 border-[3px] 
                             border-foreground rounded-sm flex flex-col justify-center 
                             items-center text-xl font-bold uppercase relative"
                   style={{
@@ -161,7 +161,7 @@ export default function Board({
             ))}
 
             <div
-              className="absolute -left-10 text-4xl "
+              className="absolute -left-5 md:-left-10 text-xl md:text-4xl "
               hidden={currRow !== rowIndex}
             >
               #

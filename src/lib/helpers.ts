@@ -129,3 +129,36 @@ export function timer(deltaT: number): string {
   }
   return `${hrs}h ${mins}m ${secs}s`;
 }
+
+export function formatImageString(
+  guesses: string[],
+  state: GameState,
+  row: number
+): string {
+  const url =
+    "https://cnvs.b-cdn.net/use/N4IgzglgXgpiBcBtArABlQGgGwCZkF0MQAzCAGxjAUVADsBDAWznhAAsBXSkIgYwHsAJixAAdWjAAeAFxgAnBmQAEAcy5gwlJQF4liUSABixkwYxKDADgCCAFgDMAYSxmLIG7awBOa66t2AdmQAET93O0tbUJ43D2t7aPxxKVkFemUAIxVHfjJ+DjkdNwBiGGFyg2SZeUUlMAE5GCKDAGVHAHkAJQBRJSwAehcxWnEKaTqARw56RpboJt0sVFGYcbAAB3peCFoVAA0igEZl2jG6ze3dgE0inBPxAAFHChmACgeBPLlXrJy8goAlADxCtxgB3cxsIoPYIQZi0SD8BGvYG0B4tVaGJHSV4GYSbOTSAowAC0jCR-AMqPRmOxc1gr2QyGpwTk9DBLWkch2KmstF4bH4jUEuJAAAkAKrdFquMFKfpKHDmezIcyoAB0qqUGuZjwx0gAMjsYI56OsWlMZjAUXrVpy5PwANYwADqEEE0jYrxw1PtTpgAAVGpo5AA3a3UwzkMg2kZo-VY2jSenWvAstkcrk8vkCoVlV71PPmOUKpVKSxanVqzWR6Ox8RgiCepQPAP0QSCHndSQFy2zeZKADUfUw2rV5lszKUwHESjnLf1RokpvNfYjs-nNOkiZxeJgBKJjTJFKpG7nW53KdeKtR86UZwAnkUTnfiELVOowEodh-KJovzOtB3neEDEL+GhKAAhLolQgNOZ7AXeZySM+CGIXOb6FBA35Aag8BYPBQHocRMIZp0MC8NI9C7BQrwQAAVGAa4pkOSiSOYD7mEx0z9rAXHMfMt7EehKG6Chw4bFsPJ7Gh6EAL6yYhW5-EKrzFOgGmoEJwkLnaXL+m6HperqRE6ei+nOkGlDyOGsY6ee+oqd8Hy5Kpah-kCinAQ8UZkDGqJeXeonaoF86Yd+OHavhhH2d5rLsva2b8oKwrvBw6zrPIvD0JorzuRoiAQPgALmAx3FWixw7iZMPEwCm-Rlk+EkCbADXVpWmqWNpsVsUU1WSZc+yhXOCmmcBw3fmBDxkBwjD0O8nxuZ+QIAHxKIcOCWDFPUOasTlqZp6DdcRo2xTAZCaNtO3Ka53zFMQD2Pcd8kTVufrOoZnqvIcz1Ke9gbBjZ65jSRvn+RNT66E1NUVQOEkXDyVxead86jSjc4TSAcmECAOWaNIVBIDjxBsswhO0BwflEI0mX0NICAU1TIB5PwmWCAzlNkEQwhkPQD4c35clAA?expires=18446744073709551615&signature=1315618d847f4eb7d8ff5edf763b367f";
+  const ftdGuesses = JSON.stringify(
+    guesses.map((str: string) => {
+      if (str === "#ffffff80") {
+        return "";
+      }
+      return str.substring(1);
+    })
+  );
+
+  let score = "";
+  if (state === "lost") {
+    score = `":( you lost"`;
+  } else {
+    const numScore = row + 1;
+    score = `"SCORE ${numScore.toString()}/6"`;
+  }
+  return `${url}&guesses=${ftdGuesses}&score=${score}&bgColour=ffffff`;
+}
+
+export function formatDate(date: Date): string {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  return `${month}-${day}-${year}`;
+}

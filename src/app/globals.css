@@ -71,6 +71,37 @@ body {
   left: calc(50% - 270px);
 }
 
+.rainbow {
+  background: linear-gradient(
+    124deg,
+    #e95c5c,
+    #ea826a,
+    #f4d46c,
+    #ecee7b,
+    #87c593,
+    #86dde2,
+    #7870df,
+    #ec8df5,
+    #d17db5
+  );
+  background-clip: text;
+  background-size: 400% 400%;
+  background-repeat: repeat;
+  animation: rainbow 10s ease-in-out infinite;
+}
+
+html {
+  cursor: url("assets/cursor_medium.png"), auto;
+}
+
+button {
+  cursor: url("assets/point_cursor.png"), auto;
+}
+
+button:disabled {
+  cursor: url("/imgs/cross_cursor.png"), auto;
+}
+
 .blob2 {
   width: 440px;
   height: 440px;
@@ -205,7 +236,7 @@ body {
 
 .repeatBG {
   mix-blend-mode: multiply;
-  background-image: url("assests/noise.svg");
+  background-image: url("assets/noise.svg");
   background-repeat: repeat;
   filter: grayscale();
 }
@@ -219,6 +250,18 @@ body {
   }
   100% {
     transform: scale(1);
+  }
+}
+
+@keyframes rainbow {
+  0% {
+    background-position: 0% 82%;
+  }
+  50% {
+    background-position: 100% 19%;
+  }
+  100% {
+    background-position: 0% 82%;
   }
 }
 
