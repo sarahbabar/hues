@@ -1,13 +1,12 @@
 "use client";
 import {
-  colorIsDarkAdvanced,
   EMPTY,
   GameState,
   getTextColour,
   hexToInt,
   intToHex,
 } from "@/lib/helpers";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function Board({
   board,
@@ -56,21 +55,6 @@ export default function Board({
         return;
       }
       if (key === "Enter") {
-        // if (currBox === 6) {
-        //   //   const newGuess = "#" + board[currRow].join("");
-        //   const newGuess = "#" + board[currRow].map(intToHex).join("");
-        //   //   console.log(newGuess);
-        //   //   console.log(board);
-        //   setGuess((currGuesses: string[]) => {
-        //     const newGuesses = [...currGuesses];
-        //     newGuesses[currRow] = newGuess;
-        //     return newGuesses;
-        //   });
-        //   setRow((prevRow: number) => {
-        //     return prevRow + 1;
-        //   });
-        //   setBox(0);
-        // }
         return submitGuess();
       }
       if (/^[a-fA-F0-9]$/.test(key)) {
