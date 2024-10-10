@@ -1,6 +1,4 @@
-export const randomColour = (oldDate: Date) => {
-  const currentDate = new Date(oldDate.getTime());
-  currentDate.setHours(0, 0, 0, 0);
+export const randomColour = (currentDate: Date) => {
   const sinceEpoc: number = currentDate.getTime();
 
   // h: 0, 360

@@ -19,10 +19,20 @@ export default function Home() {
   // let date: string = new Date().toLocaleString().split(",")[0];
 
   // const [isVisible, setIsVisible] = useState(false);
-  const date = new Date();
-  date.setHours(0, 0, 0, 0);
+  const now = new Date();
+  const [yyyy, mm, dd] = [
+    now.getUTCFullYear(),
+    now.getUTCMonth() + 1,
+    now.getUTCDate(),
+  ];
+
+  const parsedDate = new Date(
+    `${yyyy}-${mm.toString().padStart(2, "0")}-${dd
+      .toString()
+      .padStart(2, "0")}T04:00:00Z`
+  );
   return (
-    <Game date={date}></Game>
+    <Game date={parsedDate}></Game>
 
     // <div className="flex flex-col items-center font-departure text-foreground relative">
     //   <div className="bg-foreground w-full mb-1 md:mb-5 flex flex-col text-center items-center">
