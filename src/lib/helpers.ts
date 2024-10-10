@@ -169,14 +169,15 @@ export function parseDate(date: string) {
   const regex = /^(?:1[0-2]?|[1-9])-(?:[1-9]|[12][0-9]|3[01])-20[0-9]{2}$/;
   if (regex.test(date)) {
     const [mm, dd, yyyy] = date.split("-");
-    console.log(mm + dd + yyyy);
+    // console.log(mm + dd + yyyy);
     const parsedDate = new Date(
-      `${yyyy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}T00:00:00Z`
+      `${yyyy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}T04:00:00Z`
     );
 
-    const offset = parsedDate.getTimezoneOffset() * 60000;
+    // const offset = parsedDate.getTimezoneOffset() * 60000;
 
-    return new Date(parsedDate.getTime() + offset);
+    // return new Date(parsedDate.getTime() + offset);
+    return parsedDate;
   }
   return null;
 }
