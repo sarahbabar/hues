@@ -171,10 +171,12 @@ export function parseDate(date: string) {
     const [mm, dd, yyyy] = date.split("-");
     console.log(mm + dd + yyyy);
     const parsedDate = new Date(
-      `${yyyy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}T04:00:00Z`
+      `${yyyy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}T00:00:00Z`
     );
-    parsedDate.setHours(0, 0, 0, 0);
-    return parsedDate;
+
+    const offset = parsedDate.getTimezoneOffset() * 60000;
+
+    return new Date(parsedDate.getTime() + offset);
   }
   return null;
 }
