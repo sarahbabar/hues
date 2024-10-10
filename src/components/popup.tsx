@@ -4,6 +4,7 @@ import {
   getTextColour,
   timer,
 } from "@/lib/helpers";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function Popup({
@@ -41,9 +42,9 @@ export default function Popup({
     };
   }, []);
 
-  if (gameState === "playing" || gameState === "idle") {
-    return;
-  }
+  // if (gameState === "playing" || gameState === "idle") {
+  //   return;
+  // }
 
   async function copyImgToClipboard(imgUrl: string) {
     try {
@@ -64,79 +65,73 @@ export default function Popup({
   }
 
   return (
-    <div className="fixed top-[30%] w-[380px] h-[390px] z-50 bg-white flex flex-col justify-center rounded-sm border-[3px] border-foreground">
-      <div className="flex relative">
-        <button
-          className="-top-4 right-3 text-3xl absolute flex items-center md:hover:scale-110 transition ease-in-out duration-200"
-          onClick={() => setGameState("idle")}
-          // onClick={() => setIsVisible(!isVisible)}
+    <AnimatePresence>
+      {(gameState === "won" || gameState === "lost") && (
+        <motion.div
+          className="fixed top-[30%] w-[380px] h-[390px] z-50 bg-white flex flex-col 
+                          justify-center rounded-sm border-[3px] border-foreground"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            duration: 0.2,
+            ease: "easeInOut",
+          }}
         >
-          {/* <svg
-            className="scale h-16 w-16"
-            version="1.1"
-            x="0px"
-            y="0px"
-            viewBox="0 0 78 97.5"
-            enableBackground="new 0 0 78 78"
-          >
-            <g>
-              <rect x="54" y="54" width="6" height="6" />
-              <rect x="36" y="36" width="6" height="6" />
-              <rect x="30" y="42" width="6" height="6" />
-              <rect x="24" y="48" width="6" height="6" />
-              <rect x="18" y="54" width="6" height="6" />
-              <rect x="42" y="30" width="6" height="6" />
-              <rect x="48" y="24" width="6" height="6" />
-              <rect x="54" y="18" width="6" height="6" />
-              <rect x="42" y="42" width="6" height="6" />
-              <rect x="48" y="48" width="6" height="6" />
-              <rect x="30" y="30" width="6" height="6" />
-              <rect x="18" y="18" width="6" height="6" />
-              <rect x="24" y="24" width="6" height="6" />
-            </g>
-          </svg> */}
-          <img src="/imgs/cross_cursor.png"></img>
-        </button>
-      </div>
-
-      <div className="flex flex-col text-xl items-center uppercase mt-6">
-        {gameState === "won" && <div>♥ Yay, you won!</div>}
-        {gameState === "lost" && <div>:&#40; better luck next time</div>}
-
-        <div className="flex flex-col items-center text-center my-4">
-          <div>The target colour was</div>
-          <div
-            className="w-min p-2 m-2 border-[3px] border-foreground rounded-sm"
-            style={{
-              ["backgroundColor" as any]: target,
-              ["color" as any]: getTextColour(target),
-            }}
-          >
-            {target}
+          <div className="flex relative">
+            <button
+              className="-top-4 right-3 text-3xl absolute flex items-center md:hover:scale-110 transition ease-in-out duration-200"
+              onClick={() => setGameState("idle")}
+              // onClick={() => setIsVisible(!isVisible)}
+            >
+              <img src="/imgs/cross_cursor.png"></img>
+            </button>
           </div>
-        </div>
 
-        <div className="uppercase m-2">Next game in</div>
-        <div className="text-center font-bold">{time}</div>
+          <div className="flex flex-col text-xl items-center uppercase mt-6">
+            {gameState === "won" && <div>♥ Yay, you won!</div>}
+            {gameState === "lost" && <div>:&#40; better luck next time</div>}
 
-        <div className="mb-3 mt-8 uppercase flex flex-col items-center">
-          {/* <div className="">
+            <div className="flex flex-col items-center text-center my-4">
+              <div>The target colour was</div>
+              <div
+                className="w-min p-2 m-2 border-[3px] border-foreground rounded-sm"
+                style={{
+                  ["backgroundColor" as any]: target,
+                  ["color" as any]: getTextColour(target),
+                }}
+              >
+                {target}
+              </div>
+            </div>
+
+            <div className="uppercase m-2">Next game in</div>
+            <div className="text-center font-bold">{time}</div>
+
+            <div className="mb-3 mt-8 uppercase flex flex-col items-center">
+              {/* <div className="">
             <img src={formatImageString(guesses, gameState, row)}></img>
           </div> */}
 
-          <button
-            className="uppercase hover:scale-110 transition ease-in-out duration-200"
-            onClick={() => {
-              copyImgToClipboard(formatImageString(guesses, gameState, row));
-            }}
-          >
-            Share Results
-          </button>
-          {copy && (
-            <div className="text-base absolute uppercase bottom-3">copied!</div>
-          )}
-        </div>
-      </div>
-    </div>
+              <button
+                className="uppercase hover:scale-110 transition ease-in-out duration-200"
+                onClick={() => {
+                  copyImgToClipboard(
+                    formatImageString(guesses, gameState, row)
+                  );
+                }}
+              >
+                Share Results
+              </button>
+              {copy && (
+                <div className="text-base absolute uppercase bottom-3">
+                  copied!
+                </div>
+              )}
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

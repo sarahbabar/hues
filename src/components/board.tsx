@@ -19,6 +19,7 @@ export default function Board({
   submitGuess,
   target,
   gameState,
+  checkGame,
 }: {
   board: number[][];
   setBoard: any;
@@ -29,6 +30,7 @@ export default function Board({
   submitGuess: any;
   target: string;
   gameState: GameState;
+  checkGame: any;
 }) {
   const setToBoard = (row: number, col: number, value: number) => {
     setBoard((currBoard: number[][]) => {
@@ -157,6 +159,21 @@ export default function Board({
               hidden={currRow !== rowIndex}
             >
               #
+            </div>
+
+            <div className="pt-2 absolute -right-5 md:-right-[50px]">
+              <button
+                className="text-xl md:text-4xl 
+              transition ease-in-out duration-100 md:hover:scale-110"
+                hidden={gameState !== "idle" || currRow !== rowIndex}
+                onClick={checkGame}
+              >
+                <img
+                  alt="text-bubble"
+                  src="/imgs/text_bubble.png"
+                  width={40}
+                ></img>
+              </button>
             </div>
           </div>
         ))}

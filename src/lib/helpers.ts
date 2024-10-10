@@ -1,4 +1,5 @@
-export const randomColour = (currentDate: Date) => {
+export const randomColour = (oldDate: Date) => {
+  const currentDate = new Date(oldDate.getTime());
   currentDate.setHours(0, 0, 0, 0);
   const sinceEpoc: number = currentDate.getTime();
 
@@ -155,7 +156,9 @@ export function formatImageString(
   return `${url}&guesses=${ftdGuesses}&score=${score}&bgColour=ffffff`;
 }
 
-export function formatDate(date: Date): string {
+export function formatDate(d: Date): string {
+  const date = new Date(d.getTime());
+  date.setHours(0, 0, 0, 0);
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();

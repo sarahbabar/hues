@@ -77,21 +77,23 @@ export default function Game({ date }: { date: Date }) {
     return "idle";
   };
 
-  const handleDate = async (travel: number) => {
+  const canTravel = (travel: number) => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
     let next = new Date(date.getTime());
     next.setHours(0, 0, 0, 0);
 
     next = new Date(next.getTime() + 86400000 * travel);
-    // next.setDate((date.getDate() + travel));
+    return next.getTime() > now.getTime() ? null : next;
+  };
 
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
+  const handleDate = async (travel: number) => {
+    const next = canTravel(travel);
 
-    if (next.getTime() > now.getTime()) {
+    if (!next) {
       return;
     }
-    const x = travel > 0 ? "-200%" : "200%";
-
     await animate(scope.current, { opacity: 0 }, { duration: 0.3 });
 
     router.push(`/game/${formatDate(next)}`);
@@ -99,25 +101,6 @@ export default function Game({ date }: { date: Date }) {
 
   type Dir = "left" | "middle" | "right";
   const [direction, setDirection] = useState<Dir>("middle");
-
-  // const slideRight = () => {
-  //   setDirection("right");
-  // };
-
-  // const slideLeft = () => {
-  //   setDirection("left");
-  // };
-
-  // const getX = () => {
-  //   switch (direction) {
-  //     case "right":
-  //       return "-200%";
-  //     case "left":
-  //       return "200%";
-  //     default:
-  //       return 0;
-  //   }
-  // };
 
   const fadeIn = async () => {
     // await animate(scope.current, { opacity: 0 }, { duration: 0 });
@@ -147,6 +130,8 @@ export default function Game({ date }: { date: Date }) {
           onClick={() => {
             handleDate(1);
           }}
+          disabled={!canTravel(1)}
+          className="disabled:opacity-50"
         >
           <h2 className="mx-2 scale-y-150 text-base md:text-lg">►</h2>
         </button>
@@ -195,6 +180,7 @@ export default function Game({ date }: { date: Date }) {
           submitGuess={submitGuess}
           target={target}
           gameState={gameState}
+          checkGame={checkGame}
         ></Board>
       </div>
 
