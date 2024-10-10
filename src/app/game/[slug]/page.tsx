@@ -33,7 +33,8 @@ export default async function Archive({
   params: { slug: string };
 }) {
   const date = parseDate(params.slug);
-  if (!date) {
+  console.log(date);
+  if (date === null) {
     redirect("/");
   }
 
