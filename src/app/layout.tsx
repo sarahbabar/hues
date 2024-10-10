@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "HUES",
   description: "Guess the Hex",
   openGraph: { images: [`${prevImg}&target=19191c`] },
+  authors: [{ name: "Sarah Babar", url: "https://sarahbabar.com/" }],
 };
 
 export default function RootLayout({
