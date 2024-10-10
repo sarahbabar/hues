@@ -71,11 +71,11 @@ export default function Keyboard({
 
   return (
     <div className="flex flex-col items-center space-y-2 w-full z-20">
-      <div className="flex space-x-1 md:space-x-2">
+      <div className="flex space-x-0.5 md:space-x-2">
         {nums.map((num) => (
           <button
             className="w-9 h-12 md:w-14 md:h-14 bg-white/50 hover:bg-white disabled:hover:bg-white/50 duration-50 
-            border-[3px] border-foreground rounded-sm text-xl flex items-start justify-start px-0.5
+            border-2 md:border-[3px] border-foreground rounded-sm text-xl flex items-start justify-start px-0.5
             hover:scale-110 disabled:hover:scale-100 transition disabled:opacity-60 active:scale-95"
             key={num}
             onClick={(e) => {
@@ -89,11 +89,11 @@ export default function Keyboard({
         ))}
       </div>
 
-      <div className="flex space-x-1 md:space-x-2">
+      <div className="flex space-x-0.5 md:space-x-2">
         {letters.map((letter) => (
           <button
             className="w-9 h-12 md:w-14 md:h-14 bg-white/50 hover:bg-white disabled:hover:bg-white/50 duration-100 
-            border-[3px] border-foreground rounded-sm text-xl flex items-start justify-start px-0.5
+            border-2 md:border-[3px] border-foreground rounded-sm text-xl flex items-start justify-start px-0.5
             hover:scale-110 disabled:hover:scale-100 transition disabled:opacity-60 active:scale-95"
             key={letter}
             onClick={(e) => {

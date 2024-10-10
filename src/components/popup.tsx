@@ -68,7 +68,7 @@ export default function Popup({
     <AnimatePresence>
       {(gameState === "won" || gameState === "lost") && (
         <motion.div
-          className="fixed top-[30%] w-[380px] h-[390px] z-50 bg-white flex flex-col 
+          className="fixed top-[10rem] md:top-[20rem] w-[380px] h-[390px] z-50 bg-white flex flex-col 
                           justify-center rounded-sm border-[3px] border-foreground"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -114,7 +114,8 @@ export default function Popup({
           </div> */}
 
               <button
-                className="uppercase hover:scale-110 transition ease-in-out duration-200"
+                className="uppercase hover:scale-110 transition ease-in-out duration-200
+                hidden md:block"
                 onClick={() => {
                   copyImgToClipboard(
                     formatImageString(guesses, gameState, row)
@@ -123,6 +124,14 @@ export default function Popup({
               >
                 Share Results
               </button>
+              <a
+                className="uppercase hover:scale-110 transition ease-in-out duration-200
+                block md:hidden"
+                href={formatImageString(guesses, gameState, row)}
+                target="_blank"
+              >
+                Share Results
+              </a>
               {copy && (
                 <div className="text-base absolute uppercase bottom-3">
                   copied!

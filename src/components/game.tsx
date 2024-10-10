@@ -151,11 +151,11 @@ export default function Game({ date }: { date: Date }) {
           <div className="flex items-center justify-between">
             <div className="text-center">
               <div
-                className="w-[270px] h-[90px] md:w-[405px] md:h-[120px] rounded-sm border-[3px] border-foreground 
+                className="w-[308px] h-[85px] md:w-[405px] md:h-[120px] rounded-sm border-[3px] border-foreground 
         flex items-center justify-center bg-white/50"
               >
                 <div
-                  className="w-[255px] h-[75px] md:w-[385px] md:h-[100px] flex items-center justify-center md:py-5"
+                  className="w-[293px] h-[70px] md:w-[385px] md:h-[100px] flex items-center justify-center md:py-5"
                   style={{ ["backgroundColor" as any]: target }}
                 >
                   <h2
