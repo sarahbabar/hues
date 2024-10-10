@@ -18,8 +18,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <div className="flex flex-col items-center font-departure text-foreground relative">
+      <body className="overflow-x-hidden">
+        <div className="flex flex-col items-center font-departure text-foreground ">
           <div className="bg-foreground w-full mb-1 md:mb-5 flex flex-col text-center items-center">
             <h1
               className="text-5xl md:text-7xl font-departure uppercase font-bold text-center mt-4 mx-2 
@@ -32,8 +32,8 @@ export default function RootLayout({
             </p>
           </div>
 
-          <div className="w-4 h-4 blob1 pointer-events-none"></div>
           {children}
+          <div className="w-0 h-0 blob1 pointer-events-none fixed"></div>
         </div>
       </body>
     </html>

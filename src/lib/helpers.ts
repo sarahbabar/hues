@@ -161,3 +161,13 @@ export function formatDate(date: Date): string {
   const year = date.getFullYear();
   return `${month}-${day}-${year}`;
 }
+
+export function parseDate(date: string) {
+  const regex = /^(?:1[0-2]?|[1-9])-(?:[1-9]|[12][0-9]|3[01])-20[0-9]{2}$/;
+  if (regex.test(date)) {
+    const parsedDate = new Date(date);
+    parsedDate.setHours(0, 0, 0, 0);
+    return parsedDate;
+  }
+  return null;
+}

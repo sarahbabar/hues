@@ -13,6 +13,7 @@ import Keyboard from "./keyboard";
 import Popup from "./popup";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion, useAnimate } from "framer-motion";
 
 export default function Game({ date }: { date: Date }) {
   const router = useRouter();
@@ -22,6 +23,8 @@ export default function Game({ date }: { date: Date }) {
     const temp = new Array(6).fill(EMPTY);
     initial.push(temp);
   }
+
+  const [scope, animate] = useAnimate();
 
   const [board, setBoard] = useState(initial);
   const [row, setRow] = useState(0);
@@ -74,40 +77,91 @@ export default function Game({ date }: { date: Date }) {
     return "idle";
   };
 
-  const handleDate = (travel: number) => {
-    const next = new Date(date.getTime());
-    next.setDate(date.getDate() + travel);
+  const handleDate = async (travel: number) => {
+    let next = new Date(date.getTime());
+    next.setHours(0, 0, 0, 0);
 
-    if (next.getTime() >= new Date().getTime()) {
+    next = new Date(next.getTime() + 86400000 * travel);
+    // next.setDate((date.getDate() + travel));
+
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    if (next.getTime() > now.getTime()) {
       return;
     }
+    const x = travel > 0 ? "-200%" : "200%";
+
+    await animate(scope.current, { opacity: 0 }, { duration: 0.3 });
+
     router.push(`/game/${formatDate(next)}`);
   };
 
+  type Dir = "left" | "middle" | "right";
+  const [direction, setDirection] = useState<Dir>("middle");
+
+  // const slideRight = () => {
+  //   setDirection("right");
+  // };
+
+  // const slideLeft = () => {
+  //   setDirection("left");
+  // };
+
+  // const getX = () => {
+  //   switch (direction) {
+  //     case "right":
+  //       return "-200%";
+  //     case "left":
+  //       return "200%";
+  //     default:
+  //       return 0;
+  //   }
+  // };
+
+  const fadeIn = async () => {
+    // await animate(scope.current, { opacity: 0 }, { duration: 0 });
+    await animate([
+      [scope.current, { opacity: 1 }, { duration: 0.1 }],
+      // [scope.current, { opacity: 0 }, { at: 0 }],
+    ]);
+  };
   useEffect(() => {
-    const now = new Date();
-    date.setHours(0, 0, 0, 0);
-    now.setHours(0, 0, 0, 0);
-    if (date.getTime() >= now.getTime()) {
-      router.push("/");
-    }
-  }, []);
+    fadeIn();
+  });
 
   return (
     <>
-      <div className="flex items-center my-1">
-        <button onClick={() => handleDate(-1)}>
+      <div className="flex items-center mt-2 mb-1">
+        <button
+          onClick={() => {
+            handleDate(-1);
+          }}
+        >
           <h2 className="mx-2 scale-y-150 text-base md:text-lg">◄</h2>
         </button>
         <h1 className="text-center mx-2 text-lg md:text-2xl">
           {formatDate(date)}
         </h1>
-        <button onClick={() => handleDate(1)}>
+        <button
+          onClick={() => {
+            handleDate(1);
+          }}
+        >
           <h2 className="mx-2 scale-y-150 text-base md:text-lg">►</h2>
         </button>
       </div>
 
-      <div className="my-1 py-0.5 px-0.5 rounded-sm z-20">
+      {/* <motion.div
+        className="my-1 py-0.5 px-0.5 rounded-sm z-20"
+        initial={{ x: "0%", opacity: "0%" }}
+        animate={{ x: getX(), opacity: "100%" }}
+        transition={{
+          duration: 0.3,
+          ease: "easeInOut",
+        }}
+      > */}
+      <div className="my-1 py-0.5 px-0.5 rounded-sm z-20 opacity-0" ref={scope}>
         <div className="flex flex-col items-center rounded-sm pb-3 px-2 md:py-5 md:px-5 uppercase">
           <div className="flex items-center justify-between">
             <div className="text-center">

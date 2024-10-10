@@ -19,9 +19,10 @@ export default function Home() {
   // let date: string = new Date().toLocaleString().split(",")[0];
 
   // const [isVisible, setIsVisible] = useState(false);
-
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
   return (
-    <Game date={new Date()}></Game>
+    <Game date={date}></Game>
 
     // <div className="flex flex-col items-center font-departure text-foreground relative">
     //   <div className="bg-foreground w-full mb-1 md:mb-5 flex flex-col text-center items-center">

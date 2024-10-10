@@ -7,6 +7,7 @@ import {
   intToHex,
 } from "@/lib/helpers";
 import { useEffect } from "react";
+import { motion } from "framer-motion";
 
 export default function Board({
   board,
@@ -117,13 +118,20 @@ export default function Board({
           >
             {row.map((box, boxIndex) => (
               <div key={boxIndex} className="flex flex-col items-center">
-                <div
+                <motion.div
                   className="w-14 h-14 md:w-16 md:h-16 border-[3px] 
                             border-foreground rounded-sm flex flex-col justify-center 
                             items-center text-xl font-bold uppercase relative"
                   style={{
                     ["backgroundColor" as any]: guesses[rowIndex],
                     ["color" as any]: getTextColour(guesses[rowIndex]),
+                  }}
+                  animate={{
+                    backgroundColor: guesses[rowIndex],
+                  }}
+                  transition={{
+                    duration: 0.2,
+                    ease: "easeInOut",
                   }}
                 >
                   {intToHex(box)}
@@ -140,7 +148,7 @@ export default function Board({
                       </div>
                     );
                   })()}
-                </div>
+                </motion.div>
               </div>
             ))}
 
