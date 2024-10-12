@@ -235,7 +235,7 @@ export default function Game({
         row={row}
       ></Popup>
 
-      <Menu visible={visible}></Menu>
+      <Menu visible={visible} setIsVisible={setIsVisible}></Menu>
     </>
   );
 }
