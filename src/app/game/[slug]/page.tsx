@@ -1,6 +1,7 @@
 "use server";
 import Game from "@/components/game";
-import { parseDate, randomColour } from "@/lib/helpers";
+import { parseDate, randomColour, UTCDate } from "@/lib/helpers";
+import { dateEST, parseDateEST } from "@/lib/time";
 import { Metadata, ResolvingMetadata, Viewport } from "next";
 import { redirect } from "next/navigation";
 
@@ -32,16 +33,21 @@ export default async function Archive({
 }: {
   params: { slug: string };
 }) {
-  const date = parseDate(params.slug);
-  console.log(date);
+  const date = parseDateEST(params.slug);
+
   if (date === null) {
     redirect("/");
   }
 
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-  if (date.getTime() > now.getTime()) {
-    redirect("/");
-  }
-  return <Game date={date}></Game>;
+  const now = dateEST();
+
+  //now.setHours(0, 0, 0, 0);
+  // if (date.getTime() > now.getTime()) {
+  //   redirect("/");
+  // }
+
+  const prev = new Date(date.getTime() - 86400000);
+  const next = new Date(date.getTime() + 86400000);
+  console.log(date, now, prev, next);
+  return <Game date={date} prev={prev} next={next}></Game>;
 }

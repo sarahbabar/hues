@@ -68,7 +68,7 @@ export default function Popup({
     <AnimatePresence>
       {(gameState === "won" || gameState === "lost") && (
         <motion.div
-          className="fixed top-[10rem] md:top-[20rem] w-[380px] h-[390px] z-50 bg-white flex flex-col 
+          className="fixed top-[10rem] md:top-[20rem] w-[290px] h-[340px] md:w-[380px] md:h-[390px] z-50 bg-white flex flex-col 
                           justify-center rounded-sm border-[3px] border-foreground"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -88,11 +88,11 @@ export default function Popup({
             </button>
           </div>
 
-          <div className="flex flex-col text-xl items-center uppercase mt-6">
+          <div className="flex flex-col text-base md:text-xl items-center uppercase mt-6">
             {gameState === "won" && <div>♥ Yay, you won!</div>}
             {gameState === "lost" && <div>:&#40; better luck next time</div>}
 
-            <div className="flex flex-col items-center text-center my-4">
+            <div className="flex flex-col items-center text-center mt-4 mb-2 md:my-4">
               <div>The target colour was</div>
               <div
                 className="w-min p-2 m-2 border-[3px] border-foreground rounded-sm"
@@ -108,7 +108,7 @@ export default function Popup({
             <div className="uppercase m-2">Next game in</div>
             <div className="text-center font-bold">{time}</div>
 
-            <div className="mb-3 mt-8 uppercase flex flex-col items-center">
+            <div className="mb-3 mt-5 md:mt-8 uppercase flex flex-col items-center">
               {/* <div className="">
             <img src={formatImageString(guesses, gameState, row)}></img>
           </div> */}

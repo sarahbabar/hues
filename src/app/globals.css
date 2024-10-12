@@ -34,8 +34,8 @@ body {
 }
 
 .blob1 {
-  width: 540px;
-  height: 540px;
+  width: 320px;
+  height: 330px;
   border-radius: 100%;
   background: radial-gradient(
       ellipse at 50% 50%,
@@ -64,11 +64,21 @@ body {
     );
   background-blend-mode: screen, luminosity, saturation, darken, color-dodge,
     color;
-  filter: blur(60px);
+  filter: blur(40px);
   /* animation: blob1 15s infinite ease-in-out; */
   /* position: absolute; */
   top: calc(50% - 200px);
-  left: calc(50% - 270px);
+  left: calc(50% - 160px);
+}
+
+@media (min-width: 768px) {
+  .blob1 {
+    width: 540px;
+    height: 540px;
+    top: calc(50% - 270px); /* Adjusted for 540px */
+    left: calc(50% - 270px);
+    filter: blur(60px);
+  }
 }
 
 .rainbow {

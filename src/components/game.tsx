@@ -15,7 +15,15 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, useAnimate } from "framer-motion";
 
-export default function Game({ date }: { date: Date }) {
+export default function Game({
+  date,
+  prev,
+  next,
+}: {
+  date: Date;
+  prev: Date;
+  next: Date | null;
+}) {
   const router = useRouter();
   const initial: number[][] = [];
 
@@ -78,14 +86,19 @@ export default function Game({ date }: { date: Date }) {
   };
 
   const canTravel = (travel: number) => {
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
+    if (travel < 0) {
+      return prev;
+    } else {
+      return next;
+    }
+    // const now = new Date();
+    // now.setHours(0, 0, 0, 0);
 
-    let next = new Date(date.getTime());
-    next.setHours(0, 0, 0, 0);
+    // let next = new Date(date.getTime());
+    // next.setHours(0, 0, 0, 0);
 
-    next = new Date(next.getTime() + 86400000 * travel);
-    return next.getTime() > now.getTime() ? null : next;
+    // next = new Date(next.getTime() + 86400000 * travel);
+    // return next.getTime() > now.getTime() ? null : next;
   };
 
   const handleDate = async (travel: number) => {
@@ -98,9 +111,6 @@ export default function Game({ date }: { date: Date }) {
 
     router.push(`/game/${formatDate(next)}`);
   };
-
-  type Dir = "left" | "middle" | "right";
-  const [direction, setDirection] = useState<Dir>("middle");
 
   const fadeIn = async () => {
     // await animate(scope.current, { opacity: 0 }, { duration: 0 });
@@ -115,6 +125,16 @@ export default function Game({ date }: { date: Date }) {
 
   return (
     <>
+      <div className="md:hidden z-50 fixed top-5 right-2.5">
+        <button
+          className="text-xl md:text-4xl 
+              transition ease-in-out duration-100 md:hover:scale-110"
+          hidden={gameState !== "idle"}
+          onClick={checkGame}
+        >
+          <img alt="text-bubble" src="/imgs/text_bubble.png" width={40}></img>
+        </button>
+      </div>
       <div className="flex items-center mt-2 mb-1">
         <button
           onClick={() => {
@@ -151,7 +171,7 @@ export default function Game({ date }: { date: Date }) {
           <div className="flex items-center justify-between">
             <div className="text-center">
               <div
-                className="w-[308px] h-[85px] md:w-[405px] md:h-[120px] rounded-sm border-[3px] border-foreground 
+                className="w-[308px] h-[85px] md:w-[405px] md:h-[120px] rounded-sm border-[2.5px] md:border-[3px] border-foreground 
         flex items-center justify-center bg-white/50"
               >
                 <div

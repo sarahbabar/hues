@@ -179,3 +179,29 @@ export function parseDate(date: string) {
   }
   return null;
 }
+
+export function UTCDate() {
+  const now = new Date();
+  const [yyyy, mm, dd] = [
+    now.getUTCFullYear(),
+    now.getUTCMonth() + 1,
+    now.getUTCDate(),
+  ];
+
+  const parsedDate = new Date(
+    `${yyyy}-${mm.toString().padStart(2, "0")}-${dd
+      .toString()
+      .padStart(2, "0")}T00:00:00Z`
+  );
+  //- 3600000 * 20
+  const date = new Date(parsedDate.getTime());
+  return date;
+}
+
+function isDaylightSavings(date: Date): boolean {
+  return false;
+}
+
+export function dateEST() {
+  const date = new Date();
+}

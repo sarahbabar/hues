@@ -21,16 +21,27 @@ export default function RootLayout({
     <html lang="en">
       <body className="overflow-x-hidden">
         <div className="flex flex-col items-center font-departure text-foreground ">
-          <div className="z-20 bg-foreground w-full mb-1 md:mb-5 flex flex-col text-center items-center">
-            <h1
-              className="text-4xl md:text-7xl font-departure uppercase font-bold text-center mt-2 md:mt-4 mx-2 
+          <div className="z-20 bg-foreground w-full mb-1 md:mb-5 flex items-center">
+            <div className="absolute top-6 left-3 md:top-11 md:left-10">
+              <button className="w-[25px] h-[25px] md:w-[45px] md:h-[45px]">
+                <img
+                  alt="menu"
+                  src="/imgs/menu_white_spread.png"
+                  className=""
+                ></img>
+              </button>
+            </div>
+            <div className="flex flex-col text-center items-center mx-auto">
+              <h1
+                className="text-4xl md:text-7xl font-departure uppercase font-bold text-center mt-2 md:mt-4 mx-2 
         text-background hover:text-transparent hover:bg-clip-text rainbow w-min transition ease-in-out duration-200"
-            >
-              hues
-            </h1>
-            <p className="uppercase text-background text-xs md:text-base text-center mb-2 md:mb-4 md:mt-1">
-              guess the hex
-            </p>
+              >
+                hues
+              </h1>
+              <p className="uppercase text-background text-xs md:text-base text-center mb-2 md:mb-4 md:mt-1">
+                guess the hex
+              </p>
+            </div>
           </div>
 
           {children}

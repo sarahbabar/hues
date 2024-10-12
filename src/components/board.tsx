@@ -121,7 +121,7 @@ export default function Board({
             {row.map((box, boxIndex) => (
               <div key={boxIndex} className="flex flex-col items-center">
                 <motion.div
-                  className="w-12 h-12 md:w-16 md:h-16 border-[3px] 
+                  className="w-12 h-12 md:w-16 md:h-16 border-[2.5px] md:border-[3px] 
                             border-foreground rounded-sm flex flex-col justify-center 
                             items-center text-xl font-bold uppercase relative"
                   style={{
@@ -161,7 +161,7 @@ export default function Board({
               #
             </div>
 
-            <div className="z-50 pt-2 fixed md:absolute -right-7 -top-[6.7rem] md:top-2 md:-right-[50px]">
+            <div className="hidden md:block px-2 md:px-0 z-50 pt-2 fixed md:absolute -right-7 -top-[6.7rem] md:top-2 md:-right-[50px]">
               <button
                 className="text-xl md:text-4xl 
               transition ease-in-out duration-100 md:hover:scale-110"
