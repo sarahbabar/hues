@@ -14,6 +14,7 @@ import Popup from "./popup";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, useAnimate } from "framer-motion";
+import Menu from "./menu";
 
 export default function Game({
   date,
@@ -100,6 +101,7 @@ export default function Game({
     // next = new Date(next.getTime() + 86400000 * travel);
     // return next.getTime() > now.getTime() ? null : next;
   };
+  const [visible, setIsVisible] = useState(false);
 
   const handleDate = async (travel: number) => {
     const next = canTravel(travel);
@@ -135,6 +137,16 @@ export default function Game({
           <img alt="text-bubble" src="/imgs/text_bubble.png" width={40}></img>
         </button>
       </div>
+
+      <div className="z-50 absolute top-6 left-3 md:top-11 md:left-10">
+        <button
+          className="w-[25px] h-[25px] md:w-[45px] md:h-[45px]"
+          onClick={() => setIsVisible(!visible)}
+        >
+          <img alt="menu" src="/imgs/menu_white_spread.png" className=""></img>
+        </button>
+      </div>
+
       <div className="flex items-center mt-2 mb-1">
         <button
           onClick={() => {
@@ -222,6 +234,8 @@ export default function Game({
         guesses={guesses}
         row={row}
       ></Popup>
+
+      <Menu visible={visible}></Menu>
     </>
   );
 }
