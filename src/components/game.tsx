@@ -1,29 +1,28 @@
 "use client";
 import {
   EMPTY,
-  formatDate,
   GameState,
   getTextColour,
   intToHex,
   randomColour,
+  toSnailTime,
 } from "@/lib/helpers";
-import board from "./board";
 import Board from "./board";
 import Keyboard from "./keyboard";
 import Popup from "./popup";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion, useAnimate } from "framer-motion";
+import { useAnimate } from "framer-motion";
 import Menu from "./menu";
 
 export default function Game({
-  date,
+  id,
   prev,
   next,
 }: {
-  date: Date;
-  prev: Date;
-  next: Date | null;
+  id: number;
+  prev: number | null;
+  next: number | null;
 }) {
   const router = useRouter();
   const initial: number[][] = [];
@@ -38,7 +37,7 @@ export default function Game({
   const [board, setBoard] = useState(initial);
   const [row, setRow] = useState(0);
   const [box, setBox] = useState(0);
-  const [target, _setTarget] = useState(randomColour(date));
+  const [target, _setTarget] = useState(randomColour(toSnailTime(id)));
 
   const [guesses, setGuess] = useState([
     "#ffffff80",
@@ -86,40 +85,18 @@ export default function Game({
     return "idle";
   };
 
-  const canTravel = (travel: number) => {
-    if (travel < 0) {
-      return prev;
-    } else {
-      return next;
-    }
-    // const now = new Date();
-    // now.setHours(0, 0, 0, 0);
-
-    // let next = new Date(date.getTime());
-    // next.setHours(0, 0, 0, 0);
-
-    // next = new Date(next.getTime() + 86400000 * travel);
-    // return next.getTime() > now.getTime() ? null : next;
-  };
   const [visible, setIsVisible] = useState(false);
 
-  const handleDate = async (travel: number) => {
-    const next = canTravel(travel);
-
-    if (!next) {
+  const handleDate = async (id: number | null) => {
+    if (id === null) {
       return;
     }
     await animate(scope.current, { opacity: 0 }, { duration: 0.3 });
-
-    router.push(`/game/${formatDate(next)}`);
+    router.push(`/game/${id}`);
   };
 
   const fadeIn = async () => {
-    // await animate(scope.current, { opacity: 0 }, { duration: 0 });
-    await animate([
-      [scope.current, { opacity: 1 }, { duration: 0.1 }],
-      // [scope.current, { opacity: 0 }, { at: 0 }],
-    ]);
+    await animate([[scope.current, { opacity: 1 }, { duration: 0.1 }]]);
   };
   useEffect(() => {
     fadeIn();
@@ -147,37 +124,28 @@ export default function Game({
         </button>
       </div>
 
-      <div className="flex items-center mt-2 mb-1">
+      <div className="flex items-center mt-2 mb-1 z-20">
         <button
           onClick={() => {
-            handleDate(-1);
+            handleDate(prev);
           }}
+          disabled={prev === null}
+          className="disabled:opacity-50"
         >
           <h2 className="mx-2 scale-y-150 text-base md:text-lg">◄</h2>
         </button>
-        <h1 className="text-center mx-2 text-lg md:text-2xl">
-          {formatDate(date)}
-        </h1>
+        <h1 className="text-center mx-2 text-lg md:text-2xl">#{id}</h1>
         <button
           onClick={() => {
-            handleDate(1);
+            handleDate(next);
           }}
-          disabled={!canTravel(1)}
+          disabled={next === null}
           className="disabled:opacity-50"
         >
           <h2 className="mx-2 scale-y-150 text-base md:text-lg">►</h2>
         </button>
       </div>
 
-      {/* <motion.div
-        className="my-1 py-0.5 px-0.5 rounded-sm z-20"
-        initial={{ x: "0%", opacity: "0%" }}
-        animate={{ x: getX(), opacity: "100%" }}
-        transition={{
-          duration: 0.3,
-          ease: "easeInOut",
-        }}
-      > */}
       <div className="my-1 py-0.5 px-0.5 rounded-sm z-20 opacity-0" ref={scope}>
         <div className="flex flex-col items-center rounded-sm pb-3 px-2 md:py-5 md:px-5 uppercase">
           <div className="flex items-center justify-between">

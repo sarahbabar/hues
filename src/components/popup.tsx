@@ -80,7 +80,7 @@ export default function Popup({
         >
           <div className="flex relative">
             <button
-              className="-top-4 right-3 text-3xl absolute flex items-center md:hover:scale-110 transition ease-in-out duration-200"
+              className="-top-5 right-3 text-3xl absolute flex items-center md:hover:scale-110 transition ease-in-out duration-200"
               onClick={() => setGameState("idle")}
               // onClick={() => setIsVisible(!isVisible)}
             >

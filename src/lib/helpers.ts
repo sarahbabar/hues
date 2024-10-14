@@ -1,12 +1,13 @@
-export const randomColour = (currentDate: Date) => {
-  const sinceEpoc: number = currentDate.getTime();
+export const oneDayMs = 24 * 60 * 60 * 1000;
+export const minTime = 1721361600000;
 
+export const randomColour = (timestamp: number) => {
   // h: 0, 360
   // S: 22, 100
   // L: 30, 82
-  const h = wrapClamp(sinceEpoc, 0, 360);
-  const s = wrapClamp(sinceEpoc, 30, 100);
-  const l = wrapClamp(sinceEpoc, 30, 100);
+  const h = wrapClamp(timestamp, 0, 360);
+  const s = wrapClamp(timestamp * 2, 30, 100);
+  const l = wrapClamp(timestamp * 3, 31, 99);
   const hex = hslToHex(h, s, l);
 
   return hex;
@@ -112,10 +113,6 @@ export function timer(deltaT: number): string {
   rem = rem % 60;
   let secs = rem;
 
-  // const hrs = date.getHours().toString().padStart(2, "0");
-  // const mins = date.getMinutes().toString().padStart(2, "0");
-  // const secs = date.getSeconds().toString().padStart(2, "0");
-
   if (hrs === 0 && mins === 0) {
     return `${secs}s`;
   }
@@ -133,8 +130,6 @@ export function formatImageString(
   state: GameState,
   row: number
 ): string {
-  const url =
-    "https://cnvs.b-cdn.net/use/N4IgzglgXgpiBcBtArABlQGgGwCZkF0MQAzCAGxjAUVADsBDAWznhAAsBXSkIgYwHsAJixAAdWjAAeAFxgAnBmQAEAcy5gwlJQF4liUSABixkwYxKDADgCCAFgDMAYSxmLIG7awBOa66t2AdmQAET93O0tbUJ43D2t7aPxxKVkFemUAIxVHfjJ+DjkdNwBiGGFyg2SZeUUlMAE5GCKDAGVHAHkAJQBRJSwAehcxWnEKaTqARw56RpboJt0sVFGYcbAAB3peCFoVAA0igEZl2jG6ze3dgE0inBPxAAFHChmACgeBPLlXrJy8goAlADxCtxgB3cxsIoPYIQZi0SD8BGvYG0B4tVaGJHSV4GYSbOTSAowAC0jCR-AMqPRmOxc1gr2QyGpwTk9DBLWkch2KmstF4bH4jUEuJAAAkAKrdFquMFKfpKHDmezIcyoAB0qqUGuZjwx0gAMjsYI56OsWlMZjAUXrVpy5PwANYwADqEEE0jYrxw1PtTpgAAVGpo5AA3a3UwzkMg2kZo-VY2jSenWvAstkcrk8vkCoVlV71PPmOUKpVKSxanVqzWR6Ox8RgiCepQPAP0QSCHndSQFy2zeZKADUfUw2rV5lszKUwHESjnLf1RokpvNfYjs-nNOkiZxeJgBKJjTJFKpG7nW53KdeKtR86UZwAnkUTnfiELVOowEodh-KJovzOtB3neEDEL+GhKAAhLolQgNOZ7AXeZySM+CGIXOb6FBA35Aag8BYPBQHocRMIZp0MC8NI9C7BQrwQAAVGAa4pkOSiSOYD7mEx0z9rAXHMfMt7EehKG6Chw4bFsPJ7Gh6EAL6yYhW5-EKrzFOgGmoEJwkLnaXL+m6HperqRE6ei+nOkGlDyOGsY6ee+oqd8Hy5Kpah-kCinAQ8UZkDGqJeXeonaoF86Yd+OHavhhH2d5rLsva2b8oKwrvBw6zrPIvD0JorzuRoiAQPgALmAx3FWixw7iZMPEwCm-Rlk+EkCbADXVpWmqWNpsVsUU1WSZc+yhXOCmmcBw3fmBDxkBwjD0O8nxuZ+QIAHxKIcOCWDFPUOasTlqZp6DdcRo2xTAZCaNtO3Ka53zFMQD2Pcd8kTVufrOoZnqvIcz1Ke9gbBjZ65jSRvn+RNT66E1NUVQOEkXDyVxead86jSjc4TSAcmECAOWaNIVBIDjxBsswhO0BwflEI0mX0NICAU1TIB5PwmWCAzlNkEQwhkPQD4c35clAA?expires=18446744073709551615&signature=1315618d847f4eb7d8ff5edf763b367f";
   const ftdGuesses = JSON.stringify(
     guesses.map((str: string) => {
       if (str === "#ffffff80") {
@@ -151,57 +146,34 @@ export function formatImageString(
     const numScore = row + 1;
     score = `"SCORE ${numScore.toString()}/6"`;
   }
-  return `${url}&guesses=${ftdGuesses}&score=${score}&bgColour=ffffff`;
+
+  const res = btoa(JSON.stringify({ score: score, guesses: ftdGuesses }));
+  return `/result?r=${res}`;
 }
 
-export function formatDate(d: Date): string {
-  const date = new Date(d.getTime());
-  date.setHours(0, 0, 0, 0);
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
-  return `${month}-${day}-${year}`;
-}
+export function parseSlug(snail: string): number | null {
+  const snailNum = parseInt(snail);
 
-export function parseDate(date: string) {
-  const regex = /^(?:1[0-2]?|[1-9])-(?:[1-9]|[12][0-9]|3[01])-20[0-9]{2}$/;
-  if (regex.test(date)) {
-    const [mm, dd, yyyy] = date.split("-");
-    // console.log(mm + dd + yyyy);
-    const parsedDate = new Date(
-      `${yyyy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}T04:00:00Z`
-    );
-
-    // const offset = parsedDate.getTimezoneOffset() * 60000;
-
-    // return new Date(parsedDate.getTime() + offset);
-    return parsedDate;
+  if (Number.isNaN(snailNum)) {
+    return null;
   }
-  return null;
+  return snailNum;
 }
 
-export function UTCDate() {
-  const now = new Date();
-  const [yyyy, mm, dd] = [
-    now.getUTCFullYear(),
-    now.getUTCMonth() + 1,
-    now.getUTCDate(),
-  ];
-
-  const parsedDate = new Date(
-    `${yyyy}-${mm.toString().padStart(2, "0")}-${dd
-      .toString()
-      .padStart(2, "0")}T00:00:00Z`
-  );
-  //- 3600000 * 20
-  const date = new Date(parsedDate.getTime());
-  return date;
+export function toSnailTime(snailInt: number): number {
+  const snailTime = minTime + snailInt * oneDayMs;
+  return snailTime;
 }
 
-function isDaylightSavings(date: Date): boolean {
-  return false;
-}
+export function getTodayID() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-export function dateEST() {
-  const date = new Date();
+  const estOffset = 5 * 60;
+  const localOffset = today.getTimezoneOffset();
+  const totalOffset = (localOffset + estOffset) * 60000;
+
+  const epochToday = today.getTime() + totalOffset - 1;
+  const todayGameID = Math.floor((epochToday - minTime) / oneDayMs);
+  return todayGameID;
 }

@@ -46,10 +46,7 @@ export default function Menu({
             <div className="uppercase">
               <div className="text-lg md:text-2xl font-bold mb-2">Symbols</div>
 
-              <div className="text-sm md:text-xl ">
-                {" "}
-                ♥ character is character
-              </div>
+              <div className="text-sm md:text-xl "> ♥ character is correct</div>
 
               <div className="text-sm md:text-xl">
                 <span className="inline-block rotate-90 font-bold">›</span> off
