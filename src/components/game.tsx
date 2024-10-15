@@ -81,9 +81,12 @@ export default function Game({
       }
     }
     setGuess(newGuesses);
-    setRow(maxRow);
     if (maxRow === 5 || won) {
+      setRow(maxRow);
       setGameState("idle");
+    } else {
+      setRow(maxRow + 1);
+      setGameState("playing");
     }
   }, [gameHistory]);
 
@@ -160,12 +163,45 @@ export default function Game({
         </button>
       </div>
 
-      <div className="z-50 absolute top-6 left-3 md:top-11 md:left-10">
+      <div className="z-50 absolute top-4 left-3 md:top-9 md:left-10 group transition ease-in-out duration-200">
         <button
-          className="w-[25px] h-[25px] md:w-[45px] md:h-[45px]"
+          // className="w-[25px] h-[25px] md:w-[45px] md:h-[45px]"
+          className="transition ease-in-out duration-200"
           onClick={() => setIsVisible(!visible)}
         >
-          <img alt="menu" src="/imgs/menu_white_spread.png" className=""></img>
+          {/* <img alt="menu" src="/imgs/menu_white_spread.png" className="">
+          
+          </img> */}
+
+          <div className="flex space-x-1 items-center justify-between mb-1 text-center">
+            <div
+              className="text-black bg-white text-sm w-[18px] h-[18px] md:text-xl font-bold md:w-7 md:h-7
+            md:group-hover:bg-[#f98d8d] md:group-hover:-translate-x-1 transition ease-in-out duration-200"
+            >
+              M
+            </div>
+            <div
+              className="text-black bg-white text-sm w-[18px] h-[18px] md:text-xl font-bold md:w-7 md:h-7
+            md:group-hover:bg-[#f9ea8d] md:group-hover:-translate-x-1 transition ease-in-out duration-200"
+            >
+              E
+            </div>
+          </div>
+
+          <div className="flex space-x-1 items-center text-center justify-between">
+            <div
+              className="text-black bg-white text-sm w-[18px] h-[18px] md:text-xl font-bold md:w-7 md:h-7
+            md:group-hover:bg-[#8df9af] md:group-hover:translate-x-1 transition ease-in-out duration-200"
+            >
+              N
+            </div>
+            <div
+              className="text-black bg-white text-sm w-[18px] h-[18px] md:text-xl font-bold md:w-7 md:h-7
+            md:group-hover:bg-[#8decf9] md:group-hover:translate-x-1 transition ease-in-out duration-200"
+            >
+              U
+            </div>
+          </div>
         </button>
       </div>
 
