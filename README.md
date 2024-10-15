@@ -11,8 +11,8 @@ Hues is a puzzle game where players guess hexadecimal colour codes. Similar to W
 **Small Screen View**
 
 <div align="center">
-  <img src="public/imgs/mobile_view.png" alt="mobile_view" width="500"/>
-  <img src="public/imgs/mobile_view_pop.png" alt="mobile_view_popup" width="500" />
+  <img src="public/imgs/mobile_view.png" alt="mobile_view" width="350"/>
+  <img src="public/imgs/mobile_view_pop.png" alt="mobile_view_popup" width="350" />
 </div>
 
 ## Tech Stack / Tools
