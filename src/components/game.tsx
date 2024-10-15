@@ -31,7 +31,6 @@ export default function Game({
   const [gameHistory, setGameHistory]: any = useState({});
   useEffect(() => {
     const gH = getStorageValue("history", {});
-    console.log("game history", gH);
     setGameHistory(gH);
   }, []);
 
@@ -43,11 +42,6 @@ export default function Game({
   const [scope, animate] = useAnimate();
 
   const [board, setBoard] = useState(initial);
-
-  // useEffect(() => {
-  //   console.log("saving board", board);
-  //   setStorageValue("board", board);
-  // }, [board]);
 
   const [row, setRow] = useState(0);
   const [box, setBox] = useState(0);
