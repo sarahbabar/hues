@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAnimate } from "framer-motion";
 import Menu from "./menu";
+import { getStorageValue, setStorageValue } from "@/lib/storage";
 
 export default function Game({
   id,
@@ -27,6 +28,13 @@ export default function Game({
   const router = useRouter();
   const initial: number[][] = [];
 
+  const [gameHistory, setGameHistory]: any = useState({});
+  useEffect(() => {
+    const gH = getStorageValue("history", {});
+    console.log("game history", gH);
+    setGameHistory(gH);
+  }, []);
+
   for (let j = 0; j < 6; j++) {
     const temp = new Array(6).fill(EMPTY);
     initial.push(temp);
@@ -35,6 +43,12 @@ export default function Game({
   const [scope, animate] = useAnimate();
 
   const [board, setBoard] = useState(initial);
+
+  // useEffect(() => {
+  //   console.log("saving board", board);
+  //   setStorageValue("board", board);
+  // }, [board]);
+
   const [row, setRow] = useState(0);
   const [box, setBox] = useState(0);
   const [target, _setTarget] = useState(randomColour(toSnailTime(id)));
@@ -47,6 +61,42 @@ export default function Game({
     "#ffffff80",
     "#ffffff80",
   ]);
+
+  useEffect(() => {
+    const todaysHistory = gameHistory[id];
+    if (todaysHistory === undefined) {
+      return;
+    }
+    setBoard(todaysHistory);
+    const newGuesses = [...guesses];
+
+    let maxRow = 0;
+    let won = false;
+    for (let i = 0; i < 6; i++) {
+      const r = todaysHistory[i];
+      if (r.some((x: number) => x === 16)) {
+        break;
+      }
+      const newGuess = "#" + r.map(intToHex).join("");
+      newGuesses[i] = newGuess;
+      maxRow = i;
+
+      if (newGuess === target) {
+        won = true;
+        break;
+      }
+    }
+    setGuess(newGuesses);
+    setRow(maxRow);
+    if (maxRow === 5 || won) {
+      setGameState("idle");
+    }
+  }, [gameHistory]);
+
+  const saveProgress = () => {
+    gameHistory[id] = board;
+    setStorageValue("history", gameHistory);
+  };
 
   const submitGuess = () => {
     if (box === 6) {
@@ -64,6 +114,7 @@ export default function Game({
         setBox(0);
       }
     }
+    saveProgress();
     return;
   };
 
@@ -104,7 +155,7 @@ export default function Game({
 
   return (
     <>
-      <div className="md:hidden z-50 fixed top-5 right-2.5">
+      <div className="absolute md:hidden z-50 top-5 right-2.5">
         <button
           className="text-xl md:text-4xl 
               transition ease-in-out duration-100 md:hover:scale-110"
