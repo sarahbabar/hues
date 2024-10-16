@@ -1,16 +1,37 @@
 export const oneDayMs = 24 * 60 * 60 * 1000;
 export const minTime = 1721361600000;
 
-export const randomColour = (timestamp: number) => {
+export const randomColour = (timestamp: number, tries: number = 5): string => {
   // h: 0, 360
   // S: 22, 100
   // L: 30, 82
   const h = wrapClamp(timestamp, 0, 360);
   const s = wrapClamp(timestamp * 2, 30, 100);
   const l = wrapClamp(timestamp * 3, 31, 99);
-  const hex = hslToHex(h, s, l);
+  let hex = hslToHex(h, s, l);
 
+  if (tries === 0) {
+    return hex;
+  }
+  const { r, g, b } = hexToRgb(hex);
+  const eps = 20;
+
+  if (r >= 255 - eps && g >= 255 - eps && b >= 255 - eps) {
+    return randomColour(timestamp / 13, tries - 1);
+  }
   return hex;
+};
+
+const hexToRgb = (hex: string) => {
+  // Remove the hash if it's there
+  const normalizedHex = hex.startsWith("#") ? hex.slice(1) : hex;
+
+  // Parse the r, g, b values
+  const r = parseInt(normalizedHex.substring(0, 2), 16);
+  const g = parseInt(normalizedHex.substring(2, 4), 16);
+  const b = parseInt(normalizedHex.substring(4, 6), 16);
+
+  return { r, g, b };
 };
 
 export function wrapClamp(value: number, min: number, max: number) {

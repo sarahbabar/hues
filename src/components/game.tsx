@@ -27,11 +27,16 @@ export default function Game({
 }) {
   const router = useRouter();
   const initial: number[][] = [];
+  const version = 1;
 
-  const [gameHistory, setGameHistory]: any = useState({});
+  const [gameHistory, setGameHistory]: any = useState({ version });
   useEffect(() => {
-    const gH = getStorageValue("history", {});
-    setGameHistory(gH);
+    const gH = getStorageValue("history", { version });
+    if (gH.version !== version) {
+      localStorage.clear();
+    } else {
+      setGameHistory(gH);
+    }
   }, []);
 
   for (let j = 0; j < 6; j++) {
