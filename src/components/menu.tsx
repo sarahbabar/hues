@@ -68,6 +68,10 @@ export default function Menu({
                 by 3 or more values higher
               </div>
             </div>
+
+            <div className="text-xl my-4 flex items-center justify-center">
+              Made By - Sarah Babar
+            </div>
           </div>
         </motion.div>
       )}
