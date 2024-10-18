@@ -116,6 +116,10 @@ button:disabled {
   cursor: url("assets/point_cursor.png"), auto;
 }
 
+a {
+  cursor: url("assets/point_cursor.png"), auto;
+}
+
 .repeatBG {
   mix-blend-mode: multiply;
   background-image: url("assets/noise.svg");
