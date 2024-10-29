@@ -67,7 +67,7 @@ body {
   filter: blur(40px);
   /* animation: blob1 15s infinite ease-in-out; */
   /* position: absolute; */
-  top: calc(50% - 200px);
+  top: calc(50% - 275px);
   left: calc(50% - 160px);
 }
 

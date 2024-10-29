@@ -149,7 +149,8 @@ export function timer(deltaT: number): string {
 export function formatImageString(
   guesses: string[],
   state: GameState,
-  row: number
+  row: number,
+  day: number
 ): string {
   const ftdGuesses = JSON.stringify(
     guesses.map((str: string) => {
@@ -168,7 +169,7 @@ export function formatImageString(
     score = `"SCORE ${numScore.toString()}/6"`;
   }
 
-  const res = btoa(JSON.stringify({ score: score, guesses: ftdGuesses }));
+  const res = btoa(JSON.stringify({ score: score, guesses: ftdGuesses, day }));
   return `/result?r=${res}`;
 }
 

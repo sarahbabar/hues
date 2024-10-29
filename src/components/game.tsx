@@ -37,6 +37,11 @@ export default function Game({
     } else {
       setGameHistory(gH);
     }
+    const hasVisited = getStorageValue("hasVisited", false);
+    if (!hasVisited) {
+      setIsVisible(true);
+      setStorageValue("hasVisited", true);
+    }
   }, []);
 
   for (let j = 0; j < 6; j++) {
@@ -287,6 +292,7 @@ export default function Game({
         target={target}
         guesses={guesses}
         row={row}
+        day={id}
       ></Popup>
 
       <Menu visible={visible} setIsVisible={setIsVisible}></Menu>

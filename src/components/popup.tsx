@@ -13,12 +13,14 @@ export default function Popup({
   target,
   guesses,
   row,
+  day,
 }: {
   setGameState: any;
   gameState: GameState;
   target: string;
   guesses: string[];
   row: number;
+  day: number;
 }) {
   const [time, setTime] = useState("00:00:00");
   const [copy, setCopy] = useState(false);
@@ -118,7 +120,7 @@ export default function Popup({
                 hidden md:block"
                 onClick={() => {
                   copyImgToClipboard(
-                    formatImageString(guesses, gameState, row)
+                    formatImageString(guesses, gameState, row, day)
                   );
                 }}
               >
@@ -127,7 +129,7 @@ export default function Popup({
               <a
                 className="uppercase hover:scale-110 transition ease-in-out duration-200
                 block md:hidden"
-                href={formatImageString(guesses, gameState, row)}
+                href={formatImageString(guesses, gameState, row, day)}
                 target="_blank"
               >
                 Share Results
