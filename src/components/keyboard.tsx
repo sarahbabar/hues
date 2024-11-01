@@ -76,7 +76,7 @@ export default function Keyboard({
           <button
             className="w-8 h-12 md:w-14 md:h-14 bg-white/50 hover:bg-white disabled:hover:bg-white/50 duration-50 
             border-[2.5px] md:border-[3px] border-foreground rounded-sm text-xl flex items-start justify-start px-0.5
-            md:hover:scale-110 disabled:hover:scale-100 transition disabled:opacity-60 active:scale-95"
+            md:hover:scale-110 disabled:hover:scale-100 transition disabled:opacity-60 md:active:scale-95"
             key={num}
             onClick={(e) => {
               (e.target as HTMLButtonElement).blur();
@@ -94,7 +94,7 @@ export default function Keyboard({
           <button
             className="w-8 h-12 md:w-14 md:h-14 bg-white/50 hover:bg-white disabled:hover:bg-white/50 duration-100 
             border-[2.5px] md:border-[3px] border-foreground rounded-sm text-xl flex items-start justify-start px-0.5
-            md:hover:scale-110 disabled:hover:scale-100 transition disabled:opacity-60 active:scale-95"
+            md:hover:scale-110 disabled:hover:scale-100 transition disabled:opacity-60 md:active:scale-95"
             key={letter}
             onClick={(e) => {
               (e.target as HTMLButtonElement).blur();
