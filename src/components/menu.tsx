@@ -72,7 +72,7 @@ export default function Menu({
             <div className="text-sm md:text-xl font-bold flex flex-col items-center justify-center uppercase space-x-2">
               <div className="flex mb-2 items-center justify-center space-x-3">
                 <div>Made By -</div>
-                <div className="transition transform hover:scale-105 ease-in-out duration-200">
+                <div className="transition transform hover:scale-105 ease-in-out duration-200 underline underline-offset-4">
                   <a href="https://sarahbabar.com/" target="_blank">
                     Sarah Babar
                   </a>
@@ -105,6 +105,24 @@ export default function Menu({
                       fill="currentColor"
                     />
                   </svg>
+                </a>
+
+                <a href="https://buymeacoffee.com/sarahbabar" target="_blank">
+                  <svg
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="w-5 h-5 md:w-8 md:h-8 md:hover:scale-110 transition ease-in-out duration-200"
+                  >
+                    <path
+                      d="M4 4h18v7h-4v5H4V4zm14 5h2V6h-2v3zm-2-3H6v8h10V6zm3 14H3v-2h16v2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  <path
+                    fill="currentColor"
+                    d="M5 2h4v2H7v2H5V2Zm0 10H3V6h2v6Zm2 2H5v-2h2v2Zm2 2v-2H7v2H3v-2H1v2h2v2h4v4h2v-4h2v-2H9Zm0 0v2H7v-2h2Zm6-12v2H9V4h6Zm4 2h-2V4h-2V2h4v4Zm0 6V6h2v6h-2Zm-2 2v-2h2v2h-2Zm-2 2v-2h2v2h-2Zm0 2h-2v-2h2v2Zm0 0h2v4h-2v-4Z"
+                  />
                 </a>
               </div>
             </div>
