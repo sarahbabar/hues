@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Link from "next/link";
 export const runtime = "edge";
 
 const prevImg =
@@ -27,7 +28,7 @@ export default function RootLayout({
                 className="text-4xl md:text-7xl font-departure uppercase font-bold text-center mt-2 md:mt-4 mx-2 
         text-background hover:text-transparent hover:bg-clip-text rainbow w-min transition ease-in-out duration-200"
               >
-                hues
+                <Link href="/">hues</Link>
               </h1>
               <p className="uppercase text-background text-xs md:text-base text-center mb-2 md:mb-4 md:mt-1">
                 guess the hex
