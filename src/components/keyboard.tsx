@@ -70,7 +70,7 @@ export default function Keyboard({
   };
 
   return (
-    <div className="flex flex-col items-center space-y-2 w-full z-20">
+    <div className="flex flex-col items-center space-y-2 w-full z-20 mb-7">
       <div className="flex space-x-0.5 md:space-x-2">
         {nums.map((num) => (
           <button

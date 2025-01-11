@@ -237,7 +237,10 @@ export default function Game({
         </button>
       </div>
 
-      <div className="my-1 py-0.5 px-0.5 rounded-sm z-20 opacity-0" ref={scope}>
+      <div
+        className="my-1 py-0.5 px-0.5 rounded-sm z-20 opacity-0 relative"
+        ref={scope}
+      >
         <div className="flex flex-col items-center rounded-sm pb-3 px-2 md:py-5 md:px-5 uppercase">
           <div className="flex items-center justify-between">
             <div className="text-center">
@@ -261,6 +264,7 @@ export default function Game({
           </div>
         </div>
 
+        <div className="w-0 h-0 blob1 pointer-events-none absolute -z-50"></div>
         <Board
           board={board}
           setBoard={setBoard}

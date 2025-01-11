@@ -37,7 +37,7 @@ export default function RootLayout({
           </div>
 
           {children}
-          <div className="w-0 h-0 blob1 pointer-events-none fixed"></div>
+          {/* <div className="w-0 h-0 blob1 pointer-events-none fixed"></div> */}
         </div>
       </body>
     </html>
